@@ -15,7 +15,7 @@ const getFiles = async (dir: string): Promise<string[]> => {
     dirents.map((dirent) => {
       const res = resolve(dir, dirent.name);
       return dirent.isDirectory() ? getFiles(res) : res;
-    })
+    }),
   );
   return Array.prototype.concat(...files);
 };
@@ -80,8 +80,8 @@ export class Emailer {
     for (const error of parsedMjml.errors) {
       log(
         chalk.red(
-          `Error in ${relative(dirname(src), src)}: ` + error.formattedMessage
-        )
+          `Error in ${relative(dirname(src), src)}: ` + error.formattedMessage,
+        ),
       );
       hasError = true;
     }
@@ -91,8 +91,8 @@ export class Emailer {
         chalk.red(
           `Two templates share the same id "${template.id}" ${src} ${
             this.templates.get(template.id)?.src
-          }`
-        )
+          }`,
+        ),
       );
       hasError = true;
     }
@@ -127,7 +127,7 @@ export class Emailer {
   async send(
     id: string,
     options: Mail.Options,
-    data: Record<string, unknown> = {}
+    data: Record<string, unknown> = {},
   ): Promise<void> {
     if (!this.transporter) {
       throw new Error("Transporter not initialized");

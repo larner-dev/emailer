@@ -29,7 +29,6 @@
     "test-coverage": "vitest run --dir ./src --coverage"
   },
   "devDependencies": {
-    "@types/koa": "2.14.0",
     "@types/mjml": "4.7.4",
     "@types/node": "20.11.17",
     "@types/nodemailer": "6.4.14",
@@ -39,8 +38,8 @@
     "concurrently": "8.2.2",
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
-    "node-mocks-http": "1.14.1",
     "nodemon": "3.0.3",
+    "prettier": "3.2.5",
     "rollup-plugin-node-externals": "7.0.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
