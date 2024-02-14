@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { readdir, readFile } from "fs/promises";
+import { readdir, readFile, realpath } from "fs/promises";
 import { dirname, isAbsolute, relative, resolve } from "path";
 import { cwd } from "process";
 import nodemailer from "nodemailer";
@@ -10,11 +10,14 @@ import Mail from "nodemailer/lib/mailer";
 import Handlebars from "handlebars";
 
 const getFiles = async (dir: string): Promise<string[]> => {
-  const dirents = await readdir(dir, { withFileTypes: true });
+  const realDir = await realpath(dir);
+  const dirents = await readdir(realDir, { withFileTypes: true });
   const files = await Promise.all(
     dirents.map((dirent) => {
-      const res = resolve(dir, dirent.name);
-      return dirent.isDirectory() ? getFiles(res) : res;
+      const res = resolve(realDir, dirent.name);
+      return dirent.isDirectory() || dirent.isSymbolicLink()
+        ? getFiles(res)
+        : res;
     }),
   );
   return Array.prototype.concat(...files);
