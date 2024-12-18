@@ -33,7 +33,9 @@ type Template = {
   src: string;
 };
 
-export class Emailer<T = unknown> {
+export type SendMessageInfo = SMTPTransport.SentMessageInfo;
+
+export class Emailer {
   transporter: nodemailer.Transporter | null;
   private templates: Map<string, Template> = new Map();
   constructor() {
@@ -131,7 +133,7 @@ export class Emailer<T = unknown> {
     id: string,
     options: Mail.Options,
     data: Record<string, unknown> = {},
-  ): Promise<T> {
+  ): Promise<SMTPTransport.SentMessageInfo> {
     if (!this.transporter) {
       throw new Error("Transporter not initialized");
     }
