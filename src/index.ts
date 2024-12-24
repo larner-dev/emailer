@@ -9,6 +9,16 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 import Mail from "nodemailer/lib/mailer";
 import Handlebars from "handlebars";
 
+Handlebars.registerHelper("if", function (conditional, options) {
+  if (conditional) {
+    //@ts-ignore
+    return options.fn(this);
+  } else {
+    //@ts-ignore
+    return options.inverse(this);
+  }
+});
+
 const getFiles = async (dir: string): Promise<string[]> => {
   const realDir = await realpath(dir);
   const dirents = await readdir(realDir, { withFileTypes: true });
