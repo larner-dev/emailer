@@ -9,15 +9,7 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 import Mail from "nodemailer/lib/mailer";
 import Handlebars from "handlebars";
 
-Handlebars.registerHelper("if", function (conditional, options) {
-  if (conditional) {
-    //@ts-ignore
-    return options.fn(this);
-  } else {
-    //@ts-ignore
-    return options.inverse(this);
-  }
-});
+export const EmailerHandlebars = Handlebars;
 
 const getFiles = async (dir: string): Promise<string[]> => {
   const realDir = await realpath(dir);
@@ -143,6 +135,7 @@ export class Emailer {
     id: string,
     options: Mail.Options,
     data: Record<string, unknown> = {},
+    debug?: boolean,
   ): Promise<SMTPTransport.SentMessageInfo> {
     if (!this.transporter) {
       throw new Error("Transporter not initialized");
@@ -160,6 +153,9 @@ export class Emailer {
       replyTo: template.replyTo ? template.replyTo(data) : undefined,
       ...options,
     };
+    if (debug) {
+      log("@larner.dev/emailer send", updatedOptions);
+    }
 
     return this.transporter.sendMail(updatedOptions);
   }
